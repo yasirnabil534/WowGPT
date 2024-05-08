@@ -9,7 +9,7 @@ const Chatbubble = (props) => {
           {props.time}
         </span>
       </div>
-      <p className={`text-sm font-normal py-2.5 ${props.name == 'Me'?'text-gray-900' : 'text-white'}`}>
+      <p className={`text-sm font-normal py-2.5 whitespace-pre-wrap ${props.name == 'Me'?'text-gray-900' : 'text-white'}`}>
         {props.message}
       </p>
       {props.extra && (
