@@ -1,11 +1,7 @@
 const mongoose = require("mongoose");
-const app = require("./app/app");
+const app = require("./src/app/app");
 const port = 3000;
 require("dotenv").config();
-
-
-
-
 
 app.get("/", (req, res) => {
   try {
