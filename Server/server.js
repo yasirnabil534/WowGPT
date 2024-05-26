@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const app = require("./src/app/app");
-const port = 3000;
 require("dotenv").config();
+const port = process.env.PORT || 3000;
 
 app.get("/", (req, res) => {
   try {
