@@ -5,11 +5,9 @@ const callGPT = async (req, res) => {
   const session = await mongoose.startSession();
   try {
     session.startTransaction();
+    res.sseSetup();
     const mainPrompt = req?.query?.mainPrompt;
     const systemPrompt = req?.query?.systemPrompt;
-    res.setHeader("Content-Type", "text/event-stream");
-    res.setHeader("Cache-Control", "no-cache");
-    res.setHeader("Connection", "keep-alive");
     const botPrompt = await runPrompt(systemPrompt, mainPrompt, session, res);
     await session.commitTransaction();
     session.endSession();

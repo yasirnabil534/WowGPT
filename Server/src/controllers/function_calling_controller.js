@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { runPrompt, getAllPrompt } = require("../services/prompt_services");
+const { runPrompt, getAllPrompt } = require("../services/function_calling_services");
 
 const callGPT = async (req, res) => {
   const session = await mongoose.startSession();
@@ -10,11 +10,7 @@ const callGPT = async (req, res) => {
     const botPrompt = await runPrompt(systemPrompt, mainPrompt, session);
     await session.commitTransaction();
     session.endSession();
-    if (botPrompt) {
-      res.status(200).json({ botPrompt });
-    } else {
-      res.status(400).json({ message: "Some problem with OpenAI" });
-    }
+    res.status(200).json({ message: botPrompt})
   } catch (err) {
     await session.abortTransaction();
     session.endSession();
