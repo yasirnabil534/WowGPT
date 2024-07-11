@@ -1,49 +1,43 @@
-import { useState, useEffect } from "react";
-import { TextBox, ChatField } from "../components";
-import axios from "axios";
+import { Outlet, useNavigate } from 'react-router-dom';
 
 const Home = () => {
-  const [messages, setMessages] = useState([]);
-  const [toggle, setToggle] = useState(false);
-  useEffect(() => {
-    console.log('rendering');
-    const callAPI = async () => {
-      const res = await axios.get("http://localhost:3000/text/get-all");
-      const messages = res.data.messageList;
-      setMessages(messages);
+  const tabElements = [
+    {
+      name: 'Text Prompt',
+      path: '/text-prompt',
+    },
+    {
+      name: 'Stream Prompt',
+      path: '/stream-prompt'
     }
-    callAPI();
-  }, [toggle]);
+  ];
 
-  const generateAns = async (message) => {
-    // * Do the API calling
-    const prompt = {
-      systemPrompt:
-        "You are a helpful assistant. You talk like a bangladeshi and help people solve coding problems. And your name is BotGPT",
-      mainPrompt: message,
-    };
-    const res = await axios.post("http://localhost:3000/text/prompt", prompt);
-    console.log(res);
-    return res.data.messageList;
-  };
+  const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col-reverse justify-between">
-      <TextBox
-        placeholder="Write down your query here"
-        setValue={setMessages}
-        messages={messages}
-        generateAns={generateAns}
-        toggle={toggle}
-        setToggle={setToggle}
-      />
-      <ChatField
-        messages={messages}
-        toggle={toggle}
-        setToggle={setToggle}
-      />
+    <div className='flex overflow-hidden'>
+      <div className='w-60 h-screen'>
+        <div className='text-2xl font-bold text-center p-2 text-white bg-black'>
+          WowGPT
+        </div>
+        <div className='flex flex-col w-full justify-between items-center h-[calc(100vh-48px)]'>
+          <div className="bg-gray-500 text-white w-full h-full flex flex-col items-center overflow-auto">
+            {tabElements.map((item) => {
+              return (
+                <div className='p-2 w-full text-center cursor-pointer hover:bg-gray-400 hover:text-black border-b' onClick={() => navigate(item.path)}>
+                  {item.name}
+                </div>
+              )
+            })}
+          </div>
+          <div className='text-sm text-white text-center bg-gray-700 w-full p-2'>&copy; Copyright: Yasir Uddin Ahamed</div>
+        </div>
+      </div>
+      <div className='w-full'>
+        <Outlet />
+      </div>
     </div>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home
